@@ -3,12 +3,15 @@
 __author__ = "M.Ylösmäki"
 
 import numpy as np
-import vectors
-import triangles
-# try:
-#     from src import triangles
-# except ModuleNotFoundError:
-#     import triangles
+import vectors as vec
+import geometry as ge
+import json
+
+#practicing .json data
+try:
+    book = json.load(open("webster.json"))
+except FileNotFoundError:
+    print("Whoops, the dictionary is lost.")
 
 # ask user data
 # read from / write to a file ?
@@ -18,8 +21,9 @@ import triangles
 def help():
     print("""Hey there! Usable commands are:
     'v' = some numbers of vectors
-    't' = meaningless triangles
+    'g' = meaningless geometry
     'h' = list of commands
+    'dict' = dictionary of something
     'q' = quit \n""")
     
 
@@ -39,19 +43,35 @@ def main():
             # vector lengths calculated e.g.:
             x = np.array([[3,4,0],[1,4,2]])
             y = np.array([[4,4,2],[0,-3,-1]])
-            print("vector angles:", vectors.vector_angles(x, y))
+            print("vector angles:", vec.vector_angles(x, y))
 
             # vector angles calculated e.g.:
             np.random.seed(0)
             b = np.random.randint(0, 10, (3,4))
-            print("vector lengths:", vectors.vector_lengths(b))
+            print("vector lengths:", vec.vector_lengths(b))
             print()
 
-        elif what == 't':
+        elif what == 'g':
             # triangle calculation e.g.: 
-            print("hypothenuse:", triangles.hypothenuse(1, 2))
-            print("area:", triangles.area(1, 2))
+            print("hypothenuse:", ge.triangle_hypothenuse(1, 2))
+            print("area:", ge.triangle_area(1, 2))
             print()
+
+        elif what == 'dict':
+            #dictionary of something, 'ni' prints the valid keys, hits prints the meaning
+            #if not a hit, throws you out of dictionary
+            print("<book> 'ni' prints every key if needed")
+            while True:
+                word = input("<book> Meaning of: ")
+                if word == 'ni':
+                    for x in book.keys():
+                        print(x)
+                elif word in book.keys():
+                    for ind, x in enumerate(book[word]):
+                        print(f"{ind+1}. {x}")
+                else:
+                    print("<book> Not found. Bye.")
+                    break
         
         elif what == 'h':
             help()
